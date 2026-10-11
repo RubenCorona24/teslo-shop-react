@@ -7,7 +7,13 @@ export const AuthenticatedRoute = ({ children }: PropsWithChildren) => {
     //desestructurar el authStatus de nuestro gestor de estado (zustand)
     const { authStatus } = useAuthStore()
     //verificar el status
-    if (authStatus === "checking") return null
+    if (authStatus === "checking") {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <p>Verificando sesión...</p>
+            </div>
+        );
+    }
     if (authStatus === "not-authenticated") return <Navigate to={"/auth/login"} /> //re-direccionamos a login
 
     return children //si está autenticado regresa children
@@ -17,7 +23,13 @@ export const NotAuthenticatedRoute = ({ children }: PropsWithChildren) => {
     //desestructurar el authStatus de nuestro gestor de estado (zustand)
     const { authStatus } = useAuthStore()
     //verificar el status
-    if (authStatus === "checking") return null
+    if (authStatus === "checking") {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <p>Verificando sesión...</p>
+            </div>
+        );
+    }
     if (authStatus === "authenticated") return <Navigate to={"/"} /> //re-direccionamos al home
 
     return children //si está autenticado regresa children
@@ -27,7 +39,13 @@ export const AdminRoute = ({ children }: PropsWithChildren) => {
     //desestructurar el authStatus de nuestro gestor de estado (zustand)
     const { authStatus, isAdmin } = useAuthStore()
     //verificar el status
-    if (authStatus === "checking") return null
+    if (authStatus === "checking") {
+        return (
+            <div className="flex min-h-screen items-center justify-center">
+                <p>Verificando sesión...</p>
+            </div>
+        );
+    }
     if (authStatus === "not-authenticated") return <Navigate to={"/auth/login"} />
     //Caso de no ser administrador
     if (!isAdmin()) return <Navigate to={"/"} /> //re-direccionamos al home

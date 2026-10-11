@@ -71,20 +71,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     },
     checkAuthStatus: async () => {
         try {
-            //usar nuestra acción
-            const { token, user } = await checkAuthAction()
+            const { token, user } = await checkAuthAction();
+
             set({
-                user, token
-            })
-            return true
+                user,
+                token,
+                authStatus: 'authenticated',
+            });
+
+            return true;
         } catch (error) {
-            console.error(error)
+            console.error('Error al comprobar la autenticación:', error);
+
+            localStorage.removeItem('token');
+
             set({
-                user: undefined,
-                token: undefined,
-                authStatus: 'not-authenticated'
-            })
-            return false
+                user: null,
+                token: null,
+                authStatus: 'not-authenticated',
+            });
+
+            return false;
         }
     }
 }))

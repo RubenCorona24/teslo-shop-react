@@ -41,30 +41,35 @@ export const ProductForm = ({ product, subTitle, title, isPending, onSubmit }: P
     useEffect(() => {
         setFiles([])
     }, [product])
-    const selectedSizes = watch("sizes")
-    const selectedTags = watch("tags")
+    const selectedSizes = watch("sizes") ?? []
+    const selectedTags = watch("tags") ?? []
     const currentStock = watch("stock")
 
     const inputTagRef = useRef<HTMLInputElement>(null)
 
-    const addTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        const triggerKeys = ['Enter', ' ', ',']
-        if (!triggerKeys.includes(e.key)) return
 
-        e.preventDefault()
-        const tag = inputTagRef.current?.value.trim()
+    const addTag = () => {
+        const tag = inputTagRef.current?.value.trim();
+
         if (!tag) return;
-        const tagSet = new Set(getValues("tags") ?? [])
-        tagSet.add(tag)
-        setValue("tags", Array.from(tagSet))
-        {/*if (newTag.trim() && !product.tags.includes(newTag.trim())) {
-                    setProduct((prev) => ({
-                        ...prev,
-                        tags: [...prev.tags, newTag.trim()],
-                    }));
-                    setNewTag('');
-                }*/}
-        if (inputTagRef.current) inputTagRef.current.value = ''
+
+        const tagSet = new Set(getValues("tags") ?? []);
+        tagSet.add(tag);
+
+        setValue("tags", Array.from(tagSet));
+
+        if (inputTagRef.current) {
+            inputTagRef.current.value = "";
+        }
+    };
+
+    const handleTagKeyDown = (
+        e: React.KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (!["Enter", " ", ","].includes(e.key)) return;
+
+        e.preventDefault();
+        addTag();
     };
 
     const removeTag = (tagToRemove: string) => {
@@ -383,12 +388,12 @@ export const ProductForm = ({ product, subTitle, title, isPending, onSubmit }: P
                                         //value={newTag}
                                         //onChange={(e) => setNewTag(e.target.value)}
                                         //onKeyDown={(e) => e.key === 'Enter' && addTag()}
-                                        onKeyDown={addTag}
+                                        onKeyDown={handleTagKeyDown}
                                         placeholder="Añadir nueva etiqueta..."
                                         className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                                     />
 
-                                    <Button onClick={addTag} className="px-4 py-2rounded-lg ">
+                                    <Button type="button" onClick={addTag} className="px-4 py-2rounded-lg ">
                                         <Plus className="h-4 w-4" />
                                     </Button>
                                 </div>

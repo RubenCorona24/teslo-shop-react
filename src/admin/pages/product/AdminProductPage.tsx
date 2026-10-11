@@ -43,6 +43,7 @@ export const AdminProductPage = () => {
     if (isLoading) return <CustomFullScreenLoading />
     if (!product) {
         navigate("/admin/products")
+        return null
     }
     return <ProductForm title={title}
         subTitle={subtitle}
